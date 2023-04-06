@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Geolocalización y redirección</title>
+	<script>
+		function redirigir() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var lat = position.coords.latitude;
+					var long = position.coords.longitude;
+
+					// Hacer una llamada a la API de geolocalización para obtener la ciudad
+					var api_url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=es`;
+					fetch(api_url)
+					  .then(response => response.json())
+					  .then(data => {
+					  	var ciudad = data.locality;
+
+					  	// Redirigir a diferentes páginas según la ciudad
+					  	switch (ciudad) {
+					  		case "Echesortu":
+					  			window.location.href = "https://api.whatsapp.com/send?phone=5493412666758";
+					  			break;
+					  		case "Buenos Aires":
+					  			window.location.href = "https://ejemplo.com/buenos-aires.html";
+					  			break;
+					  		case "Córdoba":
+					  			window.location.href = "https://ejemplo.com/cordoba.html";
+					  			break;
+					  		default:
+					  			alert(`Lo siento, no pudimos encontrar información para ${ciudad}`);
+					  			break;
+					  	}
+					  })
+					  .catch(error => console.log(error));
+				});
+			} else {
+				alert("Tu navegador no soporta la API de geolocalización");
+			}
+		}
+	</script>
+</head>
+<body onload="redirigir();">
+</body>
+</html>
