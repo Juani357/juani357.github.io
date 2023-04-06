@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Geolocalización y redirección</title>
+	<title>Redirigiendo al representante de tu region.</title>
 	<script>
 		function redirigir() {
 			if (navigator.geolocation) {
@@ -28,7 +28,7 @@
 					  			window.location.href = "https://ejemplo.com/cordoba.html";
 					  			break;
 					  		default:
-					  			alert(`Lo siento, no pudimos encontrar información para ${ciudad}`);
+					  			alert(`Lo siento, no pudimos encontrar representantes en ${ciudad}`);
 					  			break;
 					  	}
 					  })
