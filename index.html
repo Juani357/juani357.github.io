@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Redirigiendo al representante de tu region.</title>
-	<script>
-		function redirigir() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-					var lat = position.coords.latitude;
-					var long = position.coords.longitude;
+  <head>
+    <meta charset="UTF-8">
+    <title>Detección de ubicación por provincia</title>
+  </head>
+  <body>
+    <p id="provincia"></p>
 
-					// Hacer una llamada a la API de geolocalización para obtener la ciudad
-					var api_url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=es`;
-					fetch(api_url)
-					  .then(response => response.json())
-					  .then(data => {
-					  	var ciudad = data.locality;
+    <script>
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        document.getElementById("provincia").innerHTML = "La geolocalización no está disponible en este navegador.";
+      }
 
-					  	// Redirigir a diferentes páginas según la ciudad
-					  	switch (ciudad) {
-					  		case "Echesortu":
-					  			window.location.href = "https://api.whatsapp.com/send?phone=5493412666758";
-					  			break;
-					  		case "Pichincha":
-					  			window.location.href = "https://ejemplo.com/buenos-aires.html";
-					  			break;
-					  		case "Córdoba":
-					  			window.location.href = "https://ejemplo.com/cordoba.html";
-					  			break;
-					  		default:
-					  			alert(`Lo siento, no pudimos encontrar representantes en ${ciudad}`);
-					  			break;
-					  	}
-					  })
-					  .catch(error => console.log(error));
-				});
+      function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Utiliza una API de geolocalización para obtener la provincia
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const provincia = data.address.state;
+            document.getElementById("provincia").innerHTML = `Estás en la provincia de ${provincia}.`;
+
+            // Redirecciona dependiendo de la provincia
+            if (provincia === "Santa Fe") {
+              window.location.href = "https://wa.me/3415717671";
+            } else if (provincia === "Entre Ríos") {
+              window.location.href = "https://www.ejemplo.com/cordoba";
+            } else if (provincia === "Corrientes") {
+              window.location.href = "https://www.ejemplo.com/cordoba";
+			} else if (provincia === "Misiones") {
+              window.location.href = "https://www.ejemplo.com/cordoba";
+            } else if (provincia === "Chaco") {
+              window.location.href = "https://www.ejemplo.com/cordoba";
+			} else if (provincia === "Formosa") {
+              window.location.href = "https://www.ejemplo.com/cordoba";
+            } else if (provincia === "X") {
+              window.location.href = "LINK";
+			} else if (provincia === "X") {
+              window.location.href = "LINK";
+            } else if (provincia === "X") {
+              window.location.href = "LINK";
 			} else {
-				alert("Tu navegador no soporta la API de geolocalización");
-			}
-		}
-	</script>
-</head>
-<body onload="redirigir();">
-</body>
+              window.location.href = "https://www.ejemplo.com";
+            }
+          })
+          .catch(error => {
+            document.getElementById("provincia").innerHTML = "Hubo un error al obtener la ubicación.";
+          });
+      }
+    </script>
+  </body>
 </html>
